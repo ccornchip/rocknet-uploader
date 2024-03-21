@@ -1,3 +1,7 @@
+import base64
+import os
+import re
+import time
 from pathlib import Path
 
 from flask import Flask, request, render_template
@@ -72,14 +76,19 @@ ROCK_NAMES_FR = [
 def index():
     language = request.values.get("hl", "en")
     rock_names = ROCK_NAMES_EN if language == "en" else ROCK_NAMES_FR
-    return render_template("index.html", rock_names=rock_names)
+    return render_template("index.html", rock_names=zip(rock_names, ROCK_NAMES_EN))
 
 
 @app.route("/upload", methods=["post"])
 def upload():
-    file = request.files.get("uploaded-file")
-    filename = secure_filename(file.filename)
-    file.save(Path("uploads") / filename)
+    for rock_name in ROCK_NAMES_EN:
+        files = request.files.getlist(f"{rock_name}-uploaded-file")
+        for file in filter(lambda f: f.filename, files):
+            filename = secure_filename(file.filename)
+            uid = base64.b64encode(time.time_ns().to_bytes(9, "big"), altchars=b"-_").decode()
+            newfilename = re.sub(r'(.*)\.(.*)$', rf'\g<1>-{uid}.\g<2>', filename)
+            os.makedirs(Path("uploads") / rock_name, exist_ok=True)
+            file.save(Path("uploads") / rock_name / newfilename)
     return "ok"
 
 
