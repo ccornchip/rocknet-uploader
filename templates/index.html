@@ -13,29 +13,24 @@
             margin:auto;
         }
 
-        .card {
-            margin:20px;
+        table {
+            border-collapse: separate;
+            border-spacing: 10px 20px;
         }
     </style>
 </head>
 <body>
 <img src="{{ url_for('static', filename='header.png') }}" class="header">
 <form name="form" id="form" action="{{ url_for('upload') }}" method="post" enctype="multipart/form-data">
+    <table style="margin:auto">
     {% for rock_name in rock_names %}
-    <div class="card">
-        <div class="card-header"><h4>{{ rock_name }}</h4></div>
-        <div class="card-body">
-            <input type="file" name="granite-upload-file" class="form-control file-upload">
-        </div>
-    </div>
+    <tr>
+        <td><h4>{{ rock_name }}</h4></td>
+        <td><input type="file" name="granite-upload-file" class="form-control file-upload" multiple></td>
+        <td><input type="submit"></td>
+    </tr>
     {% endfor %}
-    <!-- <div class="card">
-        <div class="card-header"><h4>Gr&egrave;s</h4></div>
-        <div class="card-body">
-            <input type="file" name="gres-upload-file" class="form-control file-upload">
-        </div>
-    </div> -->
-    <input type="submit">
+    </table>
 </form>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
