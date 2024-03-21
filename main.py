@@ -4,7 +4,7 @@ import re
 import time
 from pathlib import Path
 
-from flask import Flask, request, render_template
+from flask import Flask, request, render_template, make_response
 from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
@@ -74,9 +74,13 @@ ROCK_NAMES_FR = [
 @app.route("/")
 @app.route("/index")
 def index():
-    language = request.values.get("hl", "en")
+    language = request.cookies.get("hl", "en")
+    language = request.values.get("hl", language)
     rock_names = ROCK_NAMES_EN if language == "en" else ROCK_NAMES_FR
-    return render_template("index.html", rock_names=zip(rock_names, ROCK_NAMES_EN))
+    response = make_response(render_template("index.html", rock_names=zip(rock_names, ROCK_NAMES_EN)))
+    response.set_cookie("hl", language)
+    # response.delete_cookie("lang")
+    return response
 
 
 @app.route("/upload", methods=["post"])
