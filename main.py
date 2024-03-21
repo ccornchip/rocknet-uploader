@@ -5,7 +5,37 @@ from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
 
-ROCK_NAMES = [
+ROCK_NAMES_EN = [
+    "Granite",
+    "Sandstone",
+    "Limestone",
+    "Schist",
+    "Marble",
+    "Micaschist",
+    "Orthogneiss ",
+    "Conglomerate",
+    "Gabbro ",
+    "Flint",
+    "Evaporite",
+    "Dunite",
+    "Quartzite",
+    "Basalt",
+    "Trachyte",
+    "Meulière stone",
+    "Rhyolite ",
+    "Diorite ",
+    "Obsidian",
+    "Tuff",
+    "Eclogite",
+    "Serpentinite ",
+    "Pumice",
+    "Peridotite",
+    "Andesite",
+    "Granodiorite",
+    "Coal",
+    "Others"]
+
+ROCK_NAMES_FR = [
     "Granite",
     "Grès",
     "Calcaire",
@@ -40,7 +70,9 @@ ROCK_NAMES = [
 @app.route("/")
 @app.route("/index")
 def index():
-    return render_template("index.html", rock_names=ROCK_NAMES)
+    language = request.values.get("hl", "en")
+    rock_names = ROCK_NAMES_EN if language == "en" else ROCK_NAMES_FR
+    return render_template("index.html", rock_names=rock_names)
 
 
 @app.route("/upload", methods=["post"])
