@@ -2,6 +2,7 @@ import base64
 import os
 import re
 import time
+from datetime import timedelta
 from pathlib import Path
 
 from flask import Flask, request, render_template, make_response
@@ -80,7 +81,7 @@ def index():
     response = make_response(render_template("index.html",
                                              rock_names=zip(rock_names, ROCK_NAMES_EN),
                                              hl=language))
-    response.set_cookie("hl", language)
+    response.set_cookie("hl", language, max_age=timedelta(weeks=52))
     return response
 
 
