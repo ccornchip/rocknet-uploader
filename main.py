@@ -87,6 +87,8 @@ def index():
 
 @app.route("/upload", methods=["post"])
 def upload():
+    language = request.cookies.get("hl", "en")
+    language = request.values.get("hl", language)
     for rock_name in ROCK_NAMES_EN:
         files = request.files.getlist(f"{rock_name}-uploaded-file")
         for file in filter(lambda f: f.filename, files):
@@ -95,7 +97,7 @@ def upload():
             newfilename = re.sub(r'(.*)\.(.*)$', rf'\g<1>-{uid}.\g<2>', filename)
             os.makedirs(Path("uploads") / rock_name, exist_ok=True)
             file.save(Path("uploads") / rock_name / newfilename)
-    return "ok"
+    return render_template("success.html", hl=language)
 
 
 if __name__ == '__main__':
