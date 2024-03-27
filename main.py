@@ -77,9 +77,10 @@ def index():
     language = request.cookies.get("hl", "en")
     language = request.values.get("hl", language)
     rock_names = ROCK_NAMES_EN if language == "en" else ROCK_NAMES_FR
-    response = make_response(render_template("index.html", rock_names=zip(rock_names, ROCK_NAMES_EN)))
+    response = make_response(render_template("index.html",
+                                             rock_names=zip(rock_names, ROCK_NAMES_EN),
+                                             hl=language))
     response.set_cookie("hl", language)
-    # response.delete_cookie("lang")
     return response
 
 

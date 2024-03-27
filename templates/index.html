@@ -23,6 +23,13 @@
 <div style="margin:auto;width:750px;max-width:100%">
     <img src="{{ url_for('static', filename='header.png') }}" class="header">
     <h5 style="text-align:right"><a href="?hl=fr">FR</a> | <a href="?hl=en">EN</a></h5>
+    <p>
+        {% if hl== "fr" %}
+            Si le fichier est trop volumineux veuillez contacter <a href="mailto:rocknet@ifpen.fr">rocknet@fpen.fr</a> pour une solution alternative.
+        {% else %}
+            If the file is too large please contact <a href="mailto:rocknet@ifpen.fr">rocknet@fpen.fr</a> for an alternative solution.
+        {% endif %}
+    </p>
     <form name="form" id="form" action="{{ url_for('upload') }}" method="post" enctype="multipart/form-data">
         <table style="margin:auto">
             {% for rock_name, rock_name_en in rock_names %}
