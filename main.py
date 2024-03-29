@@ -1,6 +1,5 @@
 import base64
 import os
-import re
 import time
 from datetime import timedelta
 from pathlib import Path
@@ -94,7 +93,10 @@ def upload():
         for file in filter(lambda f: f.filename, files):
             filename = secure_filename(file.filename)
             uid = base64.b64encode(time.time_ns().to_bytes(9, "big"), altchars=b"-_").decode()
-            newfilename = re.sub(r'(.*)\.(.*)$', rf'\g<1>-{uid}.\g<2>', filename)
+            splitname = filename.rsplit(".", maxsplit=1)
+            newfilename = f"{splitname[0]}-{uid}"
+            if len(splitname) == 2:
+                newfilename += f".{splitname[1]}"
             os.makedirs(Path("uploads") / rock_name, exist_ok=True)
             file.save(Path("uploads") / rock_name / newfilename)
     return render_template("success.html", hl=language)

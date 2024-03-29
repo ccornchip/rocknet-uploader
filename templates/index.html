@@ -16,7 +16,7 @@
         table {
             border-collapse: separate;
             border-spacing: 10px 20px;
-            margin-bottom: 50px;
+            margin: auto;
         }
 
         #submit-button {
@@ -40,7 +40,7 @@
         {% endif %}
     </p>
     <form name="form" id="form" action="{{ url_for('upload') }}" method="post" enctype="multipart/form-data">
-        <table style="margin:auto">
+        <table>
             {% for rock_name, rock_name_en in rock_names %}
             <tr>
                 <td><h4>{{ rock_name }}</h4></td>
